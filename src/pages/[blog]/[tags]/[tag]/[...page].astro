@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { filterByTag, getAllTags } from "@utils/tags";
+import { BLOG_CONFIG } from "src/consts";
+import { sortBlogPosts } from "@utils/blog";
+import Pagination from "@components/ui/Pagination.astro";
+import { getPermalink } from "@utils/permalinks";
+
+type Post = CollectionEntry<'blog'>
+
+export async function getStaticPaths({paginate} : any) {
+    const posts = await getCollection('blog');
+    const tags = getAllTags(posts);
+
+    return tags.map(([slug, tag]) => {
+        const filtered = filterByTag(tag, posts);
+        const sorted = filtered.sort(sortBlogPosts);
+
+        return paginate(sorted, {
+            params: {
+                blog: BLOG_CONFIG.index.pathname, 
+                tags: BLOG_CONFIG.tags.pathname,  
+                tag: slug
+            },
+            props: { tag, slug},
+            pageSize: BLOG_CONFIG.postsPerPage,
+        })
+
+    })
+}
+
+const { page, tag, slug } = Astro.props;
+---
+
+{page.data.map((post: Post) => (
+    <h1>{post.data.title}</h1>
+))}
+
+<Pagination page={page} base={getPermalink(tag, 'blog_tag')} />

@@ -1,0 +1,55 @@
+---
+import { getPaginationPages } from "@utils/pagination";
+import type { PaginationPage } from "@utils/pagination";
+import type { Page } from "astro"
+import { SITE_CONFIG } from "src/consts";
+
+export interface Props {
+    page: Page
+    base: string
+}
+const show = Math.floor(SITE_CONFIG.paginationShow / 2);
+const { page, base } = Astro.props;
+const pages = getPaginationPages(page, base);
+
+---
+
+{page.lastPage > 1 &&
+<div class="flex items-center justify-between mt-4">
+    <div class="isolate inline-flex -space-x-px rounded-md shadow-md">
+        {page.url.prev ?
+            <a href={page.url.prev} class="bg-white border border-gray-300 rounded-l-lg px-4 py-2 text-sm">Prev</a>
+            :
+            <span class="border border-gray-300 bg-gray-200 rounded-l-lg px-4 py-2 text-sm">Prev</span>
+        }
+
+        <div class="isolate hidden sm:inline-flex -space-x-px">
+        
+            {page.currentPage > show + 1 && 
+                <span class="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium">...</span>
+            }
+            
+            {pages.before.map((pg :PaginationPage) => (
+                <a href={pg.url}  class="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium">{pg.pageNum}</a>
+            ))}
+
+            <span class="relative z-10 font-medium inline-flex items-center border border-indigo-500 bg-indigo-50 px-4 py-2 text-sm">{page.currentPage}</span>
+
+            {pages.after.map((pg :PaginationPage) => (
+                <a href={pg.url} class="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium">{pg.pageNum}</a>
+            ))}
+
+            {(page.currentPage + show) < page.lastPage && 
+                <span class="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium">...</span>
+            }
+        </div>
+
+        {page.url.next ? 
+            <a href={page.url.next} class="bg-white border border-gray-300 rounded-r-lg px-4 py-2 text-sm">Next</a>
+            : 
+            <span class="border border-gray-300 bg-gray-200 rounded-r-lg px-4 py-2 text-sm">Next</span>
+        }
+    </div>
+    <p class="sm:hidden">Page {page.currentPage} of {page.lastPage}</p>
+</div>
+}

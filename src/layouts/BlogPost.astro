@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Layout from "./Layout.astro";
+import Container from "@components/atoms/Container.astro";
+import { Image } from '@astrojs/image/components';
+import { format } from 'date-fns';
+import { trimPublic } from "@utils/utils";
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const { title, description, pubDate, heroImage, tags, authors } = Astro.props;
+---
+<Layout title={title}>
+    <Container>
+        <article>
+            {heroImage && 
+                <div class="overflow-hidden rounded-3xl">
+                    <Image src={trimPublic(heroImage)} width={1400} aspectRatio={3/1} alt={title} />
+                </div>
+            }
+            <div class="max-w-prose mx-auto mt-8">
+                <h1 class="font-headings text-4xl font-bold">{title}</h1>
+                <div class="mt-6">
+                    <span>{format(new Date(pubDate), 'do LLLL yyyy')}</span>
+                </div>
+                <div class="prose pros-gray mt-8">
+                    <slot />
+                </div>
+            </div>
+        </article>
+    </Container>
+</Layout>

@@ -1,0 +1,18 @@
+---
+import Container from "./atoms/Container.astro";
+import Logo from "./atoms/Logo.astro";
+import { getBlogPermalink } from "@utils/permalinks";
+---
+
+<header class="relative">
+    <Container>
+        <div class="flex items-center justify-between h-20 text-gray-900">
+            <Logo />
+
+            <nav class="text-gray-900 font-semibold flex items-center gap-4">
+                <a href="/">Home</a>
+                <a href={getBlogPermalink()}>Blog</a>
+            </nav>
+        </div>
+    </Container>
+</header>

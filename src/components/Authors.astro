@@ -1,0 +1,33 @@
+---
+import { getCollection, CollectionEntry } from "astro:content";
+import { Image } from '@astrojs/image/components';
+
+export interface Props {
+    authors: string[],
+    show?: number
+}
+
+const { authors, show } = Astro.props;
+
+// @ts-ignore
+const authorProfiles = await getCollection('authors', ({ data }) => {
+    return authors.map((author :string) => author).includes(data.name);
+});
+---
+<div class="flex gap-4 items-center">
+    {
+       authorProfiles.slice(0, show ? show : undefined).map((author) => (
+        <div class="flex gap-2 items-center">
+            <Image 
+                src={author.data.image} 
+                alt={author.data.name} 
+                width={200} 
+                aspectRatio="1:1"
+                class="w-6 h-6 rounded-full shadow-sm" 
+            />
+            <div class="text-inherit">{author.data.name}</div>
+        </div>
+
+       ))
+    }
+</div>
