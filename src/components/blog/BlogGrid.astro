@@ -7,7 +7,7 @@ export interface Props {
 }
 const { posts } = Astro.props;
 ---
-<div class="grid gap-x-6 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
+<div class="grid gap-x-6 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
     {posts.map((post) => (
         <BlogGridItem post={post} />
     ))}

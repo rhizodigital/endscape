@@ -1,0 +1,92 @@
+
+<form action="" id="form-search">
+    <input type="text" name="q" id="search-input">
+</form>
+
+<div id="search-results"></div>
+<script>
+    interface Article {
+        title: string;
+        description: string;
+        slug: string;
+        tags: Array<string>;
+    }
+    interface ResultObject {
+        priorty: number;
+        article: Article;
+    }
+    interface ResultObjects extends Array<ResultObject>{};
+
+    (async function() {
+    let searchIndex;
+    let stopWords = ['a', 'an', 'and', 'are', 'aren\'t', 'as', 'by', 'can', 'cannot', 'can\'t', 'could', 'couldn\'t', 'how'];
+    const searchForm = document.getElementById('form-search') as HTMLFormElement;
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const searchResults = document.getElementById('search-results');
+
+   if (!searchForm || !searchInput || !searchResults) {
+        return;
+    }
+    searchInput.addEventListener('focus', async function() {
+        searchIndex = await fetch('/search-index.json').then(response => response.json()).catch(error => console.log(error));
+    });
+    searchInput.addEventListener('input', submitHandler);
+
+    function submitHandler(event: Event) {
+        event.preventDefault();
+        search(searchInput.value);
+    };
+
+    function search(query: string) {
+        if (query.length < 2) {
+            searchResults!.innerHTML = '';
+            return;
+        }
+        let regMap = query.toLowerCase().split(' ') // Split query into array of words
+            .filter((word: string) => word.length && !stopWords.includes(word)) // Remove stop words and empty strings
+            .map((word: string) => new RegExp(word, 'i')); // Create regex for each word
+
+        let results = searchIndex.reduce(function(results: Array<ResultObject>, article: Article) {
+            let priorty = 0;
+
+            for (let reg of regMap) {
+                if (reg.test(article.title)) {
+                    priorty += 100;
+                }
+                if (reg.test(article.tags.join(' '))) {
+                    priorty += 50;
+                }
+                let occurences = article.description.match(reg);
+                if (occurences) {
+                    priorty += occurences.length;
+                }
+            }
+
+            if (priorty > 0) {
+                results.push({
+                    priorty: priorty,
+                    article: article
+                });
+            }
+
+            return results;
+
+        }, []).sort((a: ResultObject, b: ResultObject) => b.priorty - a.priorty);
+
+        showResults(results);
+    }
+
+    function showResults(results: ResultObjects) {
+        if (results.length) {
+            let html = '';
+
+            for (let result of results) {
+                html += `<li><a class="text-red-500" href="/${import.meta.env.PUBLIC_BLOG_PATH}/${result.article.slug}">${result.article.title} ${result.priorty}</a></li>`;
+            }
+            searchResults!.innerHTML = html;
+        } else {
+            searchResults!.innerHTML = '<li>No results</li>';
+        }
+    }
+})();
+</script>

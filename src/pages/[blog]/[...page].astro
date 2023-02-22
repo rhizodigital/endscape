@@ -3,28 +3,34 @@ import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/atoms/Container.astro";
 import type { CollectionEntry } from "astro:content";
-import { BLOG_CONFIG } from "src/consts";
-import Authors from "@components/Authors.astro";
 import { sortBlogPosts } from "@utils/blog";
 import Pagination from "@components/ui/Pagination.astro";
 import { getBlogPermalink } from "@utils/permalinks";
 import BlogGrid from "@components/blog/BlogGrid.astro";
+import PageHeader from "@components/PageHeader.astro";
+import Search from "@components/Search.astro";
 
 type Post = CollectionEntry<'blog'>
 
-export async function getStaticPaths({ paginate }: any) {
+export async function getStaticPaths({ paginate }) {
     const posts = await getCollection('blog');
     const sorted = posts.sort(sortBlogPosts);
 
     return paginate(sorted, {
-        params: { blog: BLOG_CONFIG.index.pathname },
-        pageSize: BLOG_CONFIG.postsPerPage
+        params: { blog: import.meta.env.BLOG_PATH },
+        pageSize: import.meta.env.POSTS_PER_PAGE
     })
 }
+
 const { page } = Astro.props;
+const posts = page.data;
+
 ---
 <Layout title="Our blog">
+
+    <PageHeader />
     <Container>
+        <Search />
         <div class="mt-6">
             <BlogGrid posts={page.data} />
         </div>

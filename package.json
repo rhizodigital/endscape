@@ -8,17 +8,24 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "index": "node ./src/utils/index.mjs"
   },
   "dependencies": {
-    "@astrojs/image": "^0.13.0",
+    "@astrojs/image": "^0.14.0",
+    "@astrojs/svelte": "^2.0.1",
     "@astrojs/tailwind": "^3.0.0",
     "@fontsource/inter": "^4.5.15",
+    "@fontsource/manrope": "^4.5.13",
     "@fontsource/syne": "^4.5.13",
-    "astro": "^2.0.1",
+    "astro": "^2.0.4",
+    "astro-icon": "^0.8.0",
     "date-fns": "^2.29.3",
-    "remark-reading-time": "^2.0.1",
+    "glob": "^8.1.0",
+    "mdast-util-to-string": "^3.1.1",
+    "reading-time": "^1.5.0",
     "sharp": "^0.31.3",
+    "svelte": "^3.55.1",
     "tailwindcss": "^3.2.4"
   },
   "devDependencies": {

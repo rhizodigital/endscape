@@ -23,9 +23,12 @@ const authorProfiles = await getCollection('authors', ({ data }) => {
                 alt={author.data.name} 
                 width={200} 
                 aspectRatio="1:1"
-                class="w-6 h-6 rounded-full shadow-sm" 
+                class="w-10 h-10 rounded-full shadow-sm" 
             />
-            <div class="text-inherit">{author.data.name}</div>
+            <div>
+                <div class="text-inherit font-medium">{author.data.name}</div>
+                <slot />
+            </div>
         </div>
 
        ))

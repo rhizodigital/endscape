@@ -4,7 +4,6 @@
     "strictNullChecks": true,
     "allowJs": true,
     "baseUrl": ".",
-    "types": ["@astrojs/image/client"],
     "paths": {
       "@components/*": ["src/components/*"],
       "@layouts/*": ["src/layouts/*"],

@@ -19,12 +19,12 @@ export async function getStaticPaths({paginate} : any) {
 
         return paginate(sorted, {
             params: {
-                blog: BLOG_CONFIG.index.pathname, 
-                tags: BLOG_CONFIG.tags.pathname,  
+                blog: import.meta.env.BLOG_PATH, 
+                tags: import.meta.env.TAG_PATH,  
                 tag: slug
             },
             props: { tag, slug},
-            pageSize: BLOG_CONFIG.postsPerPage,
+            pageSize: import.meta.env.POSTS_PER_PAGE,
         })
 
     })

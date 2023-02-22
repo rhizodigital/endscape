@@ -11,22 +11,35 @@ type Props = CollectionEntry<'blog'>['data'];
 const { title, description, pubDate, heroImage, tags, authors } = Astro.props;
 ---
 <Layout title={title}>
-    <Container>
-        <article>
-            {heroImage && 
-                <div class="overflow-hidden rounded-3xl">
-                    <Image src={trimPublic(heroImage)} width={1400} aspectRatio={3/1} alt={title} />
-                </div>
-            }
-            <div class="max-w-prose mx-auto mt-8">
-                <h1 class="font-headings text-4xl font-bold">{title}</h1>
-                <div class="mt-6">
-                    <span>{format(new Date(pubDate), 'do LLLL yyyy')}</span>
-                </div>
-                <div class="prose pros-gray mt-8">
-                    <slot />
-                </div>
+    <article>
+        {heroImage && 
+            <div class="relative">
+                <Container>
+                    <div class="md:relative h-96 overflow-hidden rounded-3xl">
+                        <Image 
+                            src={trimPublic(heroImage)}  
+                            width={1400} 
+                            aspectRatio={3/2} 
+                            alt={title}
+                            class="absolute inset-0 w-full h-full object-cover"
+                        />
+                        <div class="absolute inset-0 h-full w-full bg-black opacity-40"></div>
+                    </div>
+                </Container>
             </div>
-        </article>
-    </Container>
+        }
+        <div>
+            <Container>
+                <div class="max-w-prose mx-auto mt-8">
+                    <h1 class="font-headings text-4xl font-bold">{title}</h1>
+                    <div class="mt-6">
+                        <span>{format(new Date(pubDate), 'do LLLL yyyy')}</span>
+                    </div>
+                    <div class="prose pros-gray mt-8">
+                        <slot />
+                    </div>
+                </div>
+            </Container>
+        </div>
+    </article>
 </Layout>

@@ -1,18 +1,10 @@
 ---
 import Container from "./atoms/Container.astro";
-import Logo from "./atoms/Logo.astro";
-import { getBlogPermalink } from "@utils/permalinks";
+import NavBar from "./NavBar.svelte";
 ---
 
-<header class="relative">
+<header class="absolute z-10 w-full inset-x-0 md:relative">
     <Container>
-        <div class="flex items-center justify-between h-20 text-gray-900">
-            <Logo />
-
-            <nav class="text-gray-900 font-semibold flex items-center gap-4">
-                <a href="/">Home</a>
-                <a href={getBlogPermalink()}>Blog</a>
-            </nav>
-        </div>
+        <NavBar client:load />
     </Container>
 </header>

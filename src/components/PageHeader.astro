@@ -1,0 +1,24 @@
+---
+import { Image } from '@astrojs/image/components'
+import { trimPublic } from '@utils/utils';
+import Container from "./atoms/Container.astro";
+---
+
+<div class="relative">
+    <Container>
+        <div class="md:relative overflow-hidden rounded-3xl ">
+            <Image 
+                src={trimPublic('../../public/images/home/blake-wisz-GFrBMipOd_E-unsplash.jpg')} 
+                width={1400}
+                aspectRatio={3/2} 
+                alt="Coffee shop owner in coffeshop" 
+                class="absolute -z-10 inset-0 h-full w-full object-cover transition-all grayscale"
+            />
+            <div class="bg-gray-700 absolute inset-0 w-full h-full -z-10 mix-blend-multiply"></div>
+            <div class="pt-60">
+                <h1 class="text-white font-headings font-bold text-8xl">Insights</h1>
+                
+            </div>
+        </div>
+    </Container>
+</div>

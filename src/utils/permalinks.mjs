@@ -5,13 +5,13 @@ export const BASE_PATH = SITE_CONFIG.basePath;
 export const BLOG_INDEX = slugify(BLOG_CONFIG.index.pathname);
 export const TAG_BASE = slugify(BLOG_CONFIG.tags.pathname);
 
-const trimSlashes = (str: string) => {
+const trimSlashes = (str) => {
     // remove slashes from beggining and end
     const regex = /^\/+|\/+$/g;
     return str.replace(regex, '');
 }
 
-const createPath = (...params: string[]) => {
+const createPath = (...params) => {
     // ...parms creates array from all parameters
     const paths = params
         .map((el) => trimSlashes(el)) // Remove any slashes
@@ -21,7 +21,7 @@ const createPath = (...params: string[]) => {
 }
 
 export const getPermalink = (slug = '', type = 'page') => {
-    let permalink: string;
+    let permalink;
 
     switch (type) {
         case 'blog_tag':
@@ -38,6 +38,6 @@ export const getPermalink = (slug = '', type = 'page') => {
     return definePermalink(permalink)
 }
 
-export const getBlogPermalink = (): string => getPermalink(BLOG_INDEX);
+export const getBlogPermalink = () => getPermalink(BLOG_INDEX);
 
-const definePermalink = (permalink: string) => createPath(BASE_PATH, permalink)
+const definePermalink = (permalink) => createPath(BASE_PATH, permalink)
